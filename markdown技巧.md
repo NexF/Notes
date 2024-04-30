@@ -30,3 +30,25 @@ Md斜体：*1234567890*
 普通：1234567890AaBbCcDd
 
 Md加粗：**1234567890AaBbCcDd**
+
+## 向量:`$\vec{ }$`
+向量：`$\vec{a}$`，呈现效果：$\vec{a}$
+
+## 矩阵：
+$$\begin{pmatrix}
+6&1\\
+4&3\\
+\end{pmatrix}$$
+```
+小括号矩阵：
+
+\begin{pmatrix}
+6&1\\
+4&3\\
+\end{pmatrix}
+
+中括号矩阵：bmatrix
+大括号矩阵：Bmatrix
+竖线矩阵（行列式）：vmatrix
+双竖线矩阵（行列式）：Vmatrix
+```
