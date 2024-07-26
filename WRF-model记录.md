@@ -9,8 +9,37 @@ https://github.com/wrf-model/WPS/releases
 https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/overview.html
 
 ## 环境安装
-参考https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compilation_tutorial.php./configure --prefix=$DIR/netcdf --disable-dap
-     --disable-netcdf-4 --disable-shared
+```
+sudo yum install netcdf-devel
+
+
+sudo yum install mpich-devel
+sudo yum install zlib-devel
+sudo yum install libpng-devel
+sudo yum install jasper-devel
+
+export DIR=~/src/WRF/library/bin
+export CC=gcc
+export CXX=g++
+export FC=gfortran
+export FCFLAGS=-m64
+export F77=gfortran
+export FFLAGS=-m64
+export NCDIR=/usr
+export NFDIR=/usr
+export LD_LIBRARY_PATH=${NCDIR}/lib64:${LD_LIBRARY_PATH}
+CPPFLAGS=-I${NCDIR}/include LDFLAGS=-L${NCDIR}/lib ./configure --prefix=${NFDIR}
+
+
+export NETCDF=/usr
+export HDF5=/usr
+export JASPERLIB=/usr/lib64
+export JASPERINC=/usr/include
+
+```
+
+## 环境安装
+参考https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compilation_tutorial.php
 ```
 sudo yum install gcc-gfortran   # gnu编译器在4.6以上
 
@@ -27,8 +56,24 @@ export JASPERINC=$DIR/grib2/include
 export LDFLAGS=-L$DIR/grib2/lib
 export CPPFLAGS=-I$DIR/grib2/include
 
+export PATH=/usr/bin:$PATH
+export NETCDF=/usr
+export LIBS="-lnetcdf -lz"
+# 检测zlib是否安装
+rpm -qa | grep zlib
+
+# 安装hdf5
+./configure --prefix=$DIR/hdf5
+make
+make install
+export PATH=$DIR/hdf5/bin:$PATH
+export HDF5=$DIR/hdf5
+export LD_LIBRARY_PATH=$DIR/hdf5/lib:$LD_LIBRARY_PATH
+
 # 安装netcdf-c
 cd netcdf-c-4.7.2
+export CPPFLAGS=-I${HDF5}/include
+export LDFLAGS=-L${HDF5}/lib
 ./configure --prefix=$DIR/netcdf --disable-dap  --disable-netcdf-4 --disable-shared
 make
 make install
@@ -39,8 +84,8 @@ export LIBS="-lnetcdf -lz"
 
 # 安装netcdf-fortran
 cd netcdf-fortran-4.5.2
-export CPPFLAGS=-I$DIR/netcdf/include
-export LDFLAGS=-L$DIR/netcdf/lib
+export CPPFLAGS="-I$DIR/netcdf/include -I${HDF5}/include"
+export LDFLAGS="-L$DIR/netcdf/lib -L${HDF5}/lib"
 ./configure --prefix=$DIR/netcdf --disable-dap  --disable-netcdf-4 --disable-shared
 
 # 安装mpich
